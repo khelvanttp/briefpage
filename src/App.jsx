@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import "./index.css";
 
 const products = [
@@ -79,6 +79,23 @@ const products = [
 ];
 
 function App() {
+  const headerRef = useRef(null);
+
+  useEffect(() => {
+    function updateHeaderHeight() {
+      if (headerRef.current) {
+        document.documentElement.style.setProperty(
+          "--header-height",
+          `${headerRef.current.offsetHeight}px`
+        );
+      }
+    }
+
+    updateHeaderHeight();
+    window.addEventListener("resize", updateHeaderHeight);
+    return () => window.removeEventListener("resize", updateHeaderHeight);
+  }, []);
+
   const [category, setCategory] = useState("ALL");
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [cart, setCart] = useState([]);
@@ -297,14 +314,14 @@ const handleCustomerChange = (e) => {
   </div>
 
   <nav className="navbar">
-    <button
-      type="button"
-      className={`menu-button${showMenu ? " menu-button--close" : ""}`}
-      onClick={() => setShowMenu((prev) => !prev)}
-      aria-label={showMenu ? "Close menu" : "Open menu"}
-    >
-      {showMenu ? "×" : "MENU"}
-    </button>
+   <button
+  type="button"
+  className="menu-button"
+  onClick={() => setShowMenu((prev) => !prev)}
+  aria-label={showMenu ? "Close menu" : "Open menu"}
+>
+  {showMenu ? "" : "MENU"}
+</button>
 
     <button onClick={() => setOrderComplete(false)}>BRIEFPAGE</button>
 
@@ -516,36 +533,38 @@ if (showCheckout) {
   return (
     <div className="app">
 
-      <div className="brand-marquee">
-        <div className="marquee-track">
-          <span>BRIEFPAGE</span>
-          <span>BRIEFPAGE</span>
-          <span>BRIEFPAGE</span>
-          <span>BRIEFPAGE</span>
-        </div>
+  <header className="site-header">
+    <div className="brand-marquee">
+      <div className="marquee-track">
+        <span>BRIEFPAGE</span>
+        <span>BRIEFPAGE</span>
+        <span>BRIEFPAGE</span>
+        <span>BRIEFPAGE</span>
+      </div>
+    </div>
+
+    <nav className="navbar">
+      <button
+        onClick={() => {
+          setShowCheckout(false);
+          setShowCart(true);
+        }}
+      >
+        ← CART
+      </button>
+
+      <div className="nav-links">
+        <a href="#about" onClick={(e) => { e.preventDefault(); goToSection("about"); }}>ABOUT</a>
+        <a href="#contact" onClick={(e) => { e.preventDefault(); goToSection("contact"); }}>CONTACT</a>
       </div>
 
-      <nav className="navbar">
-        <button
-          onClick={() => {
-            setShowCheckout(false);
-            setShowCart(true);
-          }}
-        >
-          ← CART
-        </button>
+      <button>
+        CART ({cartCount})
+      </button>
+    </nav>
+  </header>
 
-        <div className="nav-links">
-  <a href="#about" onClick={(e) => { e.preventDefault(); goToSection("about"); }}>ABOUT</a>
-  <a href="#contact" onClick={(e) => { e.preventDefault(); goToSection("contact"); }}>CONTACT</a>
-</div>
-
-        <button>
-          CART ({cartCount})
-        </button>
-      </nav>
-
-      <main className="checkout-page">
+  <main className="checkout-page">
 
         <div className="checkout-heading">
           <h1>CHECKOUT</h1>
@@ -725,32 +744,34 @@ if (showCheckout) {
   // CART PAGE
   if (showCart) {
     return (
-      <div className="app">
-        <div className="brand-marquee">
-          <div className="marquee-track">
-            <span>BRIEFPAGE</span>
-            <span>BRIEFPAGE</span>
-            <span>BRIEFPAGE</span>
-            <span>BRIEFPAGE</span>
-          </div>
-        </div>
+     <div className="app">
+  <header className="site-header">
+    <div className="brand-marquee">
+      <div className="marquee-track">
+        <span>BRIEFPAGE</span>
+        <span>BRIEFPAGE</span>
+        <span>BRIEFPAGE</span>
+        <span>BRIEFPAGE</span>
+      </div>
+    </div>
 
-        <nav className="navbar">
-          <button onClick={() => setShowCart(false)}>
-            ← SHOP
-          </button>
+    <nav className="navbar">
+      <button onClick={() => setShowCart(false)}>
+        ← SHOP
+      </button>
 
-          <div className="nav-links">
-  <a href="#about" onClick={(e) => { e.preventDefault(); goToSection("about"); }}>ABOUT</a>
-  <a href="#contact" onClick={(e) => { e.preventDefault(); goToSection("contact"); }}>CONTACT</a>
-</div>
+      <div className="nav-links">
+        <a href="#about" onClick={(e) => { e.preventDefault(); goToSection("about"); }}>ABOUT</a>
+        <a href="#contact" onClick={(e) => { e.preventDefault(); goToSection("contact"); }}>CONTACT</a>
+      </div>
 
-          <button>
-            CART ({cartCount})
-          </button>
-        </nav>
+      <button>
+        CART ({cartCount})
+      </button>
+    </nav>
+  </header>
 
-        <main className="cart-page">
+  <main className="cart-page">
           <div className="cart-heading">
             <h1>YOUR CART</h1>
             <p>{cartCount} ITEMS</p>
@@ -850,32 +871,34 @@ if (showCheckout) {
   if (selectedProduct) {
     return (
       <div className="app">
-        <div className="brand-marquee">
-          <div className="marquee-track">
-            <span>BRIEFPAGE</span>
-            <span>BRIEFPAGE</span>
-            <span>BRIEFPAGE</span>
-            <span>BRIEFPAGE</span>
-          </div>
-        </div>
-
-        <nav className="navbar">
-          <button onClick={closeProduct}>
-            ← BACK
-          </button>
-
-          <div className="nav-links">
-            <a href="#" onClick={closeProduct}>
-              SHOP
-            </a>
-            <a href="#about" onClick={(e) => { e.preventDefault(); goToSection("about"); }}>ABOUT</a>
-            <a href="#contact" onClick={(e) => { e.preventDefault(); goToSection("contact"); }}>CONTACT</a>
+        <header className="site-header">
+          <div className="brand-marquee">
+            <div className="marquee-track">
+              <span>BRIEFPAGE</span>
+              <span>BRIEFPAGE</span>
+              <span>BRIEFPAGE</span>
+              <span>BRIEFPAGE</span>
+            </div>
           </div>
 
-          <button onClick={() => setShowCart(true)}>
-            CART ({cartCount})
-          </button>
-        </nav>
+          <nav className="navbar">
+            <button onClick={closeProduct}>
+              ← BACK
+            </button>
+
+            <div className="nav-links">
+              <a href="#" onClick={closeProduct}>
+                SHOP
+              </a>
+              <a href="#about" onClick={(e) => { e.preventDefault(); goToSection("about"); }}>ABOUT</a>
+              <a href="#contact" onClick={(e) => { e.preventDefault(); goToSection("contact"); }}>CONTACT</a>
+            </div>
+
+            <button onClick={() => setShowCart(true)}>
+              CART ({cartCount})
+            </button>
+          </nav>
+        </header>
 
         <main className="product-page">
           <div className="product-detail-image">
@@ -969,7 +992,7 @@ if (showCheckout) {
   // SHOP PAGE
   return (
     <div className="app">
-      <header className="site-header">
+      <header className="site-header" ref={headerRef}>
   <div className="brand-marquee">
     <div className="marquee-track">
       <span>BRIEFPAGE</span>
@@ -981,13 +1004,13 @@ if (showCheckout) {
 
   <nav className="navbar">
     <button
-      className={`menu-button${showMenu ? " menu-button--close" : ""}`}
-      type="button"
-      onClick={() => setShowMenu((prev) => !prev)}
-      aria-label={showMenu ? "Close menu" : "Open menu"}
-    >
-      {showMenu ? "×" : "MENU"}
-    </button>
+  className="menu-button"
+  type="button"
+  onClick={() => setShowMenu((prev) => !prev)}
+  aria-label={showMenu ? "Close menu" : "Open menu"}
+>
+  MENU
+</button>
 
     <div className="nav-links">
   <a href="#" onClick={(e) => { e.preventDefault(); goToShop(); }}>HOME</a>
@@ -1004,46 +1027,31 @@ if (showCheckout) {
   {showMenu && (
     <div className="menu-dropdown">
       <div className="menu-header">
-        <span>MENU</span>
-        <button
-          type="button"
-          className="menu-close"
-          onClick={() => setShowMenu(false)}
-          aria-label="Close menu"
-        >
-          ×
-        </button>
-      </div>
+  <button
+    type="button"
+    className="menu-close"
+    onClick={() => setShowMenu(false)}
+    aria-label="Close menu"
+  >
+    ×
+  </button>
+</div>
 
       <div className="menu-main-links">
-        <button type="button" onClick={() => { goToShop(); setCategory("ALL"); setShowMenu(false); }}>
-          HOME
-        </button>
-        <button type="button" onClick={() => { goToShop(); setShowMenu(false); }}>
-          SHOP
-        </button>
-      </div>
+  <button type="button" onClick={() => { goToShop(); setCategory("ALL"); setShowMenu(false); }}>
+    HOME
+  </button>
+  <button type="button" onClick={() => { goToShop(); setShowMenu(false); }}>
+    SHOP
+  </button>
+</div>
 
-      <div className="menu-divider"></div>
+<div className="menu-divider"></div>
 
-      <p className="menu-label">SHOP BY CATEGORY</p>
-
-      <div className="menu-categories">
-        <button onClick={() => { goToShop(); setCategory("T-SHIRTS"); setShowMenu(false); }}>T-SHIRTS</button>
-        <button onClick={() => { goToShop(); setCategory("HOODIES"); setShowMenu(false); }}>HOODIES</button>
-        <button onClick={() => { goToShop(); setCategory("BOTTOMS"); setShowMenu(false); }}>BOTTOMS</button>
-        <button onClick={() => { goToShop(); setCategory("ACCESSORIES"); setShowMenu(false); }}>ACCESSORIES</button>
-      </div>
-
-      <div className="menu-divider"></div>
-
-      <div className="menu-secondary">
+<div className="menu-secondary">
   <a href="#about" onClick={(e) => { e.preventDefault(); goToSection("about"); }}>ABOUT</a>
   <a href="#contact" onClick={(e) => { e.preventDefault(); goToSection("contact"); }}>CONTACT</a>
-        <button type="button" onClick={() => { setShowCart(true); setShowMenu(false); }}>
-          CART ({cartCount})
-        </button>
-      </div>
+</div>
     </div>
   )}
 </header>

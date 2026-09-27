@@ -16,9 +16,7 @@ button {
   font-family: inherit;
 }
 
-.app {
-  overflow-x: hidden;
-}
+
 
 /* BRAND */
 
@@ -149,7 +147,7 @@ button {
 .product-image {
   position: relative;
   overflow: hidden;
-  background: #f2f2f2;
+  background: #fff;
   aspect-ratio: 0.8;
 }
 
@@ -348,7 +346,7 @@ footer {
 }
 
 .product-detail-image {
-  background: #f2f2f2;
+  background: #fff;
   aspect-ratio: 0.85;
   overflow: hidden;
 }
@@ -1244,8 +1242,9 @@ footer {
    ======================================== */
 
 .site-header {
-  position: relative;
-  z-index: 30;
+  position: sticky;
+  top: 0;
+  z-index: 50;
   background: #fff;
 }
 
@@ -1299,7 +1298,7 @@ footer {
 .menu-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   margin-bottom: 38px;
 }
 
@@ -1467,4 +1466,10 @@ footer {
     font-size: 15px;
     padding: 12px 10px;
   }
+}
+
+#shop,
+#about,
+#contact {
+  scroll-margin-top: var(--header-height, 220px);
 }
