@@ -22,7 +22,6 @@ button {
 
 .brand-marquee {
   overflow: hidden;
-  border-bottom: 1px solid #111;
   padding: 15px 0;
   white-space: nowrap;
 }
@@ -55,7 +54,6 @@ button {
 .navbar {
   height: 70px;
   padding: 0 5%;
-  border-bottom: 1px solid #ddd;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -88,7 +86,6 @@ button {
   display: flex;
   gap: 35px;
   overflow-x: auto;
-  border-bottom: 1px solid #ddd;
 }
 
 .categories button {
@@ -183,8 +180,10 @@ button {
 
 .product-info {
   display: flex;
-  justify-content: space-between;
-  gap: 10px;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
   padding-top: 13px;
 }
 
@@ -192,10 +191,6 @@ button {
 .product-info p {
   font-size: 12px;
   font-weight: 600;
-}
-
-.product-info p {
-  white-space: nowrap;
 }
 
 /* ABOUT & CONTACT SECTIONS */
@@ -215,9 +210,10 @@ button {
 
 .about-content h2,
 .contact-content h2 {
-  font-family: "Archivo Black", sans-serif;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
   font-size: clamp(28px, 4vw, 46px);
-  letter-spacing: -2px;
+  letter-spacing: -1px;
   margin-bottom: 25px;
 }
 
@@ -310,17 +306,20 @@ footer {
   }
 
   .product-info {
-    display: block;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
 
-  .product-info h3 {
-    font-size: 10px;
-    margin-bottom: 6px;
-  }
+.product-info h3 {
+  font-size: 10px;
+  margin-bottom: 6px;
+}
 
-  .product-info p {
-    font-size: 10px;
-  }
+.product-info p {
+  font-size: 10px;
+}
 
   .quick-add {
     width: 35px;
@@ -369,10 +368,11 @@ footer {
 }
 
 .product-details h1 {
-  font-family: "Archivo Black", sans-serif;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
   font-size: clamp(35px, 5vw, 70px);
-  line-height: 0.95;
-  letter-spacing: -3px;
+  line-height: 1.05;
+  letter-spacing: -1px;
   margin-bottom: 25px;
 }
 
@@ -517,9 +517,10 @@ footer {
 }
 
 .cart-heading h1 {
-  font-family: "Archivo Black", sans-serif;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
   font-size: clamp(40px, 6vw, 80px);
-  letter-spacing: -4px;
+  letter-spacing: -1px;
 }
 
 .cart-heading p {
@@ -639,7 +640,8 @@ footer {
 }
 
 .empty-cart h2 {
-  font-family: "Archivo Black", sans-serif;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
   font-size: 35px;
   margin-bottom: 30px;
 }
@@ -712,9 +714,10 @@ footer {
 }
 
 .checkout-heading h1 {
-  font-family: "Archivo Black", sans-serif;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
   font-size: clamp(38px, 6vw, 72px);
-  letter-spacing: -3px;
+  letter-spacing: -1px;
 }
 
 .checkout-layout {
@@ -982,10 +985,11 @@ footer {
 }
 
 .confirmation-header h1 {
-  font-family: "Archivo Black", sans-serif;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
   font-size: clamp(55px, 9vw, 110px);
-  line-height: 0.85;
-  letter-spacing: -6px;
+  line-height: 1.05;
+  letter-spacing: -2px;
   margin-bottom: 30px;
 }
 
@@ -1233,6 +1237,10 @@ footer {
   button {
     color: #000;
   }
+
+  .site-links-footer a {
+    color: #fff !important;
+  }
 }
 
 /* ========================================
@@ -1255,12 +1263,92 @@ footer {
   border: none;
   padding: 0;
   margin: 0;
-  font-family: "Archivo Black", sans-serif;
-  font-weight: 900;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
   font-size: 12px;
   letter-spacing: 0.02em;
   color: #000;
   cursor: pointer;
+}
+
+/* FULL-HEIGHT SLIDE-IN MENU PANEL */
+
+.menu-dropdown {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100vh;
+  height: 100dvh;
+  background: #ffffff;
+  z-index: 1000;
+  padding: 90px 32px 40px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.menu-close {
+  position: absolute;
+  top: 28px;
+  right: 28px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  color: #000000;
+  font-family: Arial, sans-serif;
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.menu-links {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.menu-links button,
+.menu-links a {
+  background: none;
+  border: none;
+  padding: 0;
+  text-align: left;
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #000000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.menu-links button:hover,
+.menu-links a:hover {
+  text-decoration: underline;
+}
+
+.menu-brand-footer {
+  margin-top: auto;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  color: #000000;
+}
+
+@media (max-width: 700px) {
+  .menu-dropdown {
+    width: 50%;
+    padding: 80px 26px 32px;
+  }
 }
 
 .menu-button--close {
@@ -1342,10 +1430,10 @@ footer {
   background: transparent;
   padding: 14px 12px;
   text-align: left;
-  font-family: "Archivo Black", sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 24px;
-  font-weight: 900;
-  letter-spacing: -0.03em;
+  font-weight: 700;
+  letter-spacing: -0.01em;
   color: #000000;
   cursor: pointer;
   transition: background 0.2s ease;
@@ -1468,8 +1556,95 @@ footer {
   }
 }
 
-#shop,
-#about,
-#contact {
+#shop {
   scroll-margin-top: var(--header-height, 220px);
+}
+
+/* BLACK FOOTER LINKS */
+
+.site-links-footer {
+  background: #111;
+  padding: 36px 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+}
+
+.site-links-footer button,
+.site-links-footer a {
+  background: none;
+  border: none;
+  color: #fff;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 6px 0;
+  transition: opacity 0.15s ease;
+}
+
+.site-links-footer button:hover,
+.site-links-footer a:hover {
+  opacity: 0.6;
+  text-decoration: underline;
+}
+
+/* ABOUT / CONTACT / PRIVACY PAGES */
+
+.info-page {
+  width: 92%;
+  max-width: 700px;
+  margin: 50px auto 120px;
+}
+
+.info-page-image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  margin: 0;
+}
+
+.info-page-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.info-page h1 {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: clamp(32px, 5vw, 56px);
+  letter-spacing: -1px;
+  margin-bottom: 30px;
+}
+
+.info-page p {
+  font-size: 13px;
+  line-height: 1.7;
+  color: #555;
+  margin-bottom: 25px;
+}
+
+.info-page .contact-links {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.info-page .contact-links a {
+  font-size: 12px;
+  font-weight: 700;
+  color: #111;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+@media (max-width: 700px) {
+  .info-page {
+    margin: 50px auto 80px;
+  }
 }

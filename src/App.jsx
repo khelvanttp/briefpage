@@ -17,64 +17,46 @@ const products = [
   image: "/products/chaos-graphic-long-sleeve.png",
 },
   {
-    id: 1,
-    name: "BREIFPAGE TEE",
-    price: 350,
-    category: "T-SHIRTS",
-    image:
-      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=1000&q=80",
-    description:
-      "A clean everyday tee built for a relaxed streetwear look.",
-  },
+  id: 1,
+  name: "BAGGY JEANS",
+  price: 200,
+  category: "BOTTOMS",
+  image: "/products/baggy jeans.PNG",
+},
   {
     id: 2,
-    name: "ESSENTIAL HOODIE",
-    price: 600,
-    category: "HOODIES",
-    image:
-      "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=1000&q=80",
-    description:
-      "Heavyweight essential hoodie with a relaxed fit.",
+    name: "RED SHIRT",
+    price: 250,
+    category: "T-SHIRTS",
+    image: "/products/redshirt.PNG",   
   },
   {
     id: 3,
-    name: "UTILITY PANTS",
-    price: 700,
+    name: "CARGO PANTS",
+    price: 300,
     category: "BOTTOMS",
-    image:
-      "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=1000&q=80",
-    description:
-      "Utility-inspired pants designed for everyday movement.",
+    image: "/products/cargo pants.PNG",
   },
   {
     id: 4,
     name: "BREIFPAGE CAP",
     price: 250,
     category: "ACCESSORIES",
-    image:
-      "https://images.unsplash.com/photo-1521369909029-2afed882baee?auto=format&fit=crop&w=1000&q=80",
-    description:
-      "Minimal six-panel cap finished with the Breifpage identity.",
+    image:"/products/briefpage cap.PNG",
   },
   {
     id: 5,
     name: "SIGNATURE TEE",
-    price: 400,
+    price: 100,
     category: "T-SHIRTS",
-    image:
-      "https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&w=1000&q=80",
-    description:
-      "Signature Breifpage tee with a modern oversized silhouette.",
+    image: "/products/shirt .PNG",
   },
   {
     id: 6,
-    name: "SIGNATURE HOODIE",
-    price: 650,
-    category: "HOODIES",
-    image:
-      "https://images.unsplash.com/photo-1578681994506-b8f463449011?auto=format&fit=crop&w=1000&q=80",
-    description:
-      "A premium everyday hoodie with a bold streetwear feel.",
+    name: "SIGNATURE SHIRT",
+    price: 150,
+    category: "T-SHIRTS",
+    image: "/products/balck tee.PNG",
   },
 ];
 
@@ -104,6 +86,11 @@ function App() {
   const [orderComplete, setOrderComplete] = useState(false);
   const [completedOrder, setCompletedOrder] = useState([]);
   const [showMenu, setShowMenu] = useState(false);
+const [showAbout, setShowAbout] = useState(false);
+const [showContact, setShowContact] = useState(false);
+const [showPrivacy, setShowPrivacy] = useState(false);
+const [showTerms, setShowTerms] = useState(false);
+  
 
 
   const [customerInfo, setCustomerInfo] = useState({
@@ -121,27 +108,55 @@ const [orderNumber, setOrderNumber] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [size, setSize] = useState("M");
 
-  const goToShop = () => {
+  const resetPages = () => {
   setOrderComplete(false);
   setShowCheckout(false);
   setShowCart(false);
   setSelectedProduct(null);
   setShowMenu(false);
+  setShowAbout(false);
+  setShowContact(false);
+  setShowPrivacy(false);
+  setShowTerms(false);
+};
 
+const goToShop = () => {
+  resetPages();
   window.scrollTo(0, 0);
 };
 
 const goToSection = (sectionId) => {
-  goToShop(); // reset to the shop page and scroll to top first
-
-  // wait a moment for the shop page to actually render,
-  // then smooth-scroll down to the section
+  goToShop();
   setTimeout(() => {
     const el = document.getElementById(sectionId);
     if (el) {
       el.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }, 50);
+};
+
+const goToAbout = () => {
+  resetPages();
+  setShowAbout(true);
+  window.scrollTo(0, 0);
+};
+
+const goToContact = () => {
+  resetPages();
+  setShowContact(true);
+  window.scrollTo(0, 0);
+};
+
+const goToPrivacy = () => {
+  resetPages();
+  setShowPrivacy(true);
+  window.scrollTo(0, 0);
+};
+
+const goToTerms = () => {
+  resetPages();
+  setShowTerms(true);
+  window.scrollTo(0, 0);
 };
 
   const categories = [
@@ -335,32 +350,22 @@ const handleCustomerChange = (e) => {
 
   {showMenu && (
     <div className="menu-dropdown">
-      <div className="menu-header">
-        <span>MENU</span>
-        <button
-          type="button"
-          className="menu-close"
-          onClick={() => setShowMenu(false)}
-          aria-label="Close menu"
-        >
-          ×
-        </button>
+      <button
+        type="button"
+        className="menu-close"
+        onClick={() => setShowMenu(false)}
+        aria-label="Close menu"
+      >
+        ×
+      </button>
+
+      <div className="menu-links">
+        <button type="button" onClick={goToShop}>SHOP</button>
+        <a href="#" onClick={(e) => { e.preventDefault(); goToAbout(); }}>ABOUT</a>
+        <a href="#" onClick={(e) => { e.preventDefault(); goToContact(); }}>CONTACT</a>
       </div>
 
-      <div className="menu-main-links">
-        <button type="button" onClick={() => { goToShop(); setShowMenu(false); }}>HOME</button>
-        <button type="button" onClick={() => { goToShop(); setShowMenu(false); }}>SHOP</button>
-      </div>
-
-      <div className="menu-divider"></div>
-
-      <div className="menu-secondary">
-        <a href="#about" onClick={(e) => { e.preventDefault(); goToSection("about"); }}>ABOUT</a>
-    <a href="#contact" onClick={(e) => { e.preventDefault(); goToSection("contact"); }}>CONTACT</a>
-        <button type="button" onClick={() => { setShowCart(true); setShowMenu(false); }}>
-          CART ({cartCount})
-        </button>
-      </div>
+      <div className="menu-brand-footer">BRIEFPAGE</div>
     </div>
   )}
 </header>
@@ -741,6 +746,173 @@ if (showCheckout) {
   );
 }
 
+  // ABOUT PAGE
+  if (showAbout) {
+    return (
+      <div className="app">
+        <header className="site-header">
+          <div className="brand-marquee">
+            <div className="marquee-track">
+              <span>BRIEFPAGE</span>
+              <span>BRIEFPAGE</span>
+              <span>BRIEFPAGE</span>
+              <span>BRIEFPAGE</span>
+            </div>
+          </div>
+
+          <nav className="navbar">
+            <button onClick={goToShop}>← SHOP</button>
+
+            <div className="nav-links">
+              <a href="#" onClick={(e) => { e.preventDefault(); goToContact(); }}>CONTACT</a>
+              <a href="#" onClick={(e) => { e.preventDefault(); goToPrivacy(); }}>PRIVACY POLICY</a>
+            </div>
+
+            <button onClick={() => setShowCart(true)}>
+              CART ({cartCount})
+            </button>
+          </nav>
+        </header>
+
+        <div className="info-page-image">
+  <img src="/products/about page.JPG" alt="BRIEFPAGE studio" />
+</div>
+
+<main className="info-page">
+  <h1>ABOUT BRIEFPAGE</h1>
+  <p>
+    BRIEFPAGE is a streetwear label built for movement — bold
+    graphics layered over functional, everyday pieces. Every
+    drop is designed in-house and released in limited runs.
+  </p>
+</main>
+      </div>
+    );
+  }
+
+  // CONTACT PAGE
+  if (showContact) {
+    return (
+      <div className="app">
+        <header className="site-header">
+          <div className="brand-marquee">
+            <div className="marquee-track">
+              <span>BRIEFPAGE</span>
+              <span>BRIEFPAGE</span>
+              <span>BRIEFPAGE</span>
+              <span>BRIEFPAGE</span>
+            </div>
+          </div>
+
+          <nav className="navbar">
+            <button onClick={goToShop}>← SHOP</button>
+
+            <div className="nav-links">
+              <a href="#" onClick={(e) => { e.preventDefault(); goToAbout(); }}>ABOUT</a>
+              <a href="#" onClick={(e) => { e.preventDefault(); goToPrivacy(); }}>PRIVACY POLICY</a>
+            </div>
+
+            <button onClick={() => setShowCart(true)}>
+              CART ({cartCount})
+            </button>
+          </nav>
+        </header>
+
+        <main className="info-page">
+          <h1>CONTACT</h1>
+          <p>
+            Questions about an order, sizing, or a drop? Reach out
+            and we'll get back to you.
+          </p>
+          <div className="contact-links">
+            <a href="mailto:hello@briefpage.com">hello@briefpage.com</a>
+            <a href="tel:+233000000000">+233 00 000 0000</a>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  // PRIVACY POLICY PAGE
+  if (showPrivacy) {
+    return (
+      <div className="app">
+        <header className="site-header">
+          <div className="brand-marquee">
+            <div className="marquee-track">
+              <span>BRIEFPAGE</span>
+              <span>BRIEFPAGE</span>
+              <span>BRIEFPAGE</span>
+              <span>BRIEFPAGE</span>
+            </div>
+          </div>
+
+          <nav className="navbar">
+            <button onClick={goToShop}>← SHOP</button>
+
+            <div className="nav-links">
+              <a href="#" onClick={(e) => { e.preventDefault(); goToAbout(); }}>ABOUT</a>
+              <a href="#" onClick={(e) => { e.preventDefault(); goToContact(); }}>CONTACT</a>
+            </div>
+
+            <button onClick={() => setShowCart(true)}>
+              CART ({cartCount})
+            </button>
+          </nav>
+        </header>
+
+        <main className="info-page">
+          <h1>PRIVACY POLICY</h1>
+          <p>
+            This section will outline how BRIEFPAGE collects, uses, and
+            protects your information. Replace this placeholder text
+            with your real privacy policy before launch.
+          </p>
+        </main>
+      </div>
+    );
+  }
+
+    // TERMS AND CONDITIONS PAGE
+  if (showTerms) {
+    return (
+      <div className="app">
+        <header className="site-header">
+          <div className="brand-marquee">
+            <div className="marquee-track">
+              <span>BRIEFPAGE</span>
+              <span>BRIEFPAGE</span>
+              <span>BRIEFPAGE</span>
+              <span>BRIEFPAGE</span>
+            </div>
+          </div>
+
+          <nav className="navbar">
+            <button onClick={goToShop}>← SHOP</button>
+
+            <div className="nav-links">
+              <a href="#" onClick={(e) => { e.preventDefault(); goToAbout(); }}>ABOUT</a>
+              <a href="#" onClick={(e) => { e.preventDefault(); goToContact(); }}>CONTACT</a>
+            </div>
+
+            <button onClick={() => setShowCart(true)}>
+              CART ({cartCount})
+            </button>
+          </nav>
+        </header>
+
+        <main className="info-page">
+          <h1>TERMS AND CONDITIONS</h1>
+          <p>
+            This section will outline the terms and conditions for using
+            the BRIEFPAGE website and purchasing products. Replace this
+            placeholder text with your real terms before launch.
+          </p>
+        </main>
+      </div>
+    );
+  }
+
   // CART PAGE
   if (showCart) {
     return (
@@ -1046,11 +1218,9 @@ if (showCheckout) {
   </button>
 </div>
 
-<div className="menu-divider"></div>
-
 <div className="menu-secondary">
-  <a href="#about" onClick={(e) => { e.preventDefault(); goToSection("about"); }}>ABOUT</a>
-  <a href="#contact" onClick={(e) => { e.preventDefault(); goToSection("contact"); }}>CONTACT</a>
+  <a href="#" onClick={(e) => { e.preventDefault(); goToAbout(); }}>ABOUT</a>
+  <a href="#" onClick={(e) => { e.preventDefault(); goToContact(); }}>CONTACT</a>
 </div>
     </div>
   )}
@@ -1109,37 +1279,16 @@ if (showCheckout) {
         </div>
             </main>
 
-      <section id="about" className="about-section">
-        <div className="about-content">
-          <h2>ABOUT BRIEFPAGE</h2>
-          <p>
-            BRIEFPAGE is a streetwear label built for movement — bold
-            graphics layered over functional, everyday pieces. Every
-            drop is designed in-house and released in limited runs.
-          </p>
-        </div>
-      </section>
-
-      <section id="contact" className="contact-section">
-        <div className="contact-content">
-          <h2>CONTACT</h2>
-          <p>
-            Questions about an order, sizing, or a drop? Reach out
-            and we'll get back to you.
-          </p>
-          <div className="contact-links">
-            <a href="mailto:hello@briefpage.com">hello@briefpage.com</a>
-            <a href="tel:+233000000000">+233 00 000 0000</a>
-          </div>
-        </div>
-      </section>
-
-      <footer>
-        <div>24/7 DELIVERY</div>
-        <div>SECURE PAYMENTS</div>
-        <div>EASY RETURNS</div>
-        <div>24/7 SUPPORT</div>
-      </footer>
+      <div className="site-links-footer">
+  <button type="button" onClick={goToAbout}>ABOUT</button>
+  <button type="button" onClick={goToContact}>CONTACT</button>
+  <button type="button" onClick={goToPrivacy}>PRIVACY POLICY</button>
+  <button type="button" onClick={goToTerms}>TERMS AND CONDITIONS</button>
+  {/* TODO: replace href="#" with your real Instagram link */}
+  <a href="#" target="_blank" rel="noopener noreferrer">INSTAGRAM</a>
+  {/* TODO: replace href="#" with your real YouTube link */}
+  <a href="#" target="_blank" rel="noopener noreferrer">YOUTUBE</a>
+</div>
     </div>
   );
 }
