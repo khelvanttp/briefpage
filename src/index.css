@@ -1312,7 +1312,7 @@ footer {
 .menu-links {
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 24px;
 }
 
 .menu-links button,
@@ -1322,8 +1322,8 @@ footer {
   padding: 0;
   text-align: left;
   font-family: "Inter", sans-serif;
-  font-size: 15px;
-  font-weight: 800;
+  font-size: 12px;
+  font-weight: 700;
   letter-spacing: 0.02em;
   color: #000000;
   text-decoration: none;
@@ -1646,5 +1646,184 @@ footer {
 @media (max-width: 700px) {
   .info-page {
     margin: 50px auto 80px;
+  }
+}
+
+
+.info-page .legal-date {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #111;
+}
+
+.legal-section {
+  margin-top: 45px;
+}
+
+.legal-section h2 {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  margin-bottom: 18px;
+}
+
+.legal-section h3 {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  margin: 22px 0 10px;
+}
+
+.info-page ul {
+  margin: 0 0 25px 20px;
+}
+
+.info-page li {
+  font-size: 13px;
+  line-height: 1.7;
+  color: #555;
+  margin-bottom: 6px;
+}
+
+/* PRODUCT PAGE DROPDOWNS */
+
+.product-accordions {
+  margin: 35px 0 25px;
+}
+
+.accordion {
+  border-top: 1px solid #e4e4e4;
+}
+
+.accordion:last-child {
+  border-bottom: 1px solid #e4e4e4;
+}
+
+.accordion-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: none;
+  border: none;
+  padding: 18px 0;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-align: left;
+  color: #111;
+}
+
+.accordion-chevron {
+  display: inline-block;
+  font-size: 18px;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.accordion-chevron.open {
+  transform: rotate(90deg);
+}
+
+.accordion-body {
+  padding: 0 0 22px;
+}
+
+.accordion-body p {
+  font-size: 12px;
+  line-height: 1.7;
+  color: #555;
+  margin-bottom: 14px;
+}
+
+.size-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.size-table th,
+.size-table td {
+  text-align: left;
+  font-size: 12px;
+  padding: 9px 6px 9px 0;
+}
+
+.size-table th {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.size-table td {
+  color: #333;
+}
+
+/* RECOMMENDED PRODUCTS */
+
+.recommended {
+  width: 92%;
+  max-width: 1500px;
+  margin: 0 auto 120px;
+}
+
+.recommended-title {
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-bottom: 30px;
+}
+
+.recommended-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px 18px;
+}
+
+@media (max-width: 700px) {
+  .recommended {
+    width: 94%;
+    margin-bottom: 80px;
+  }
+
+  .recommended-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 30px 10px;
+  }
+}
+
+/* SEARCH PAGE */
+
+.search-page {
+  margin: 40px auto 0;
+}
+
+.search-input {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #111;
+  border-radius: 0;
+  background: transparent;
+  padding: 18px 0;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  outline: none;
+}
+
+.search-count {
+  font-size: 11px;
+  font-weight: 600;
+  margin: 18px 0 30px;
+}
+
+@media (max-width: 700px) {
+  .search-input {
+    font-size: 16px;
   }
 }

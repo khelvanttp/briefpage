@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import "./index.css";
+import { privacyPolicy, termsAndConditions } from "./legalContent";
 
 const products = [
   {
@@ -60,6 +61,74 @@ const products = [
   },
 ];
 
+function LegalDocument({ doc }) {
+  return (
+    <>
+      <h1>{doc.title}</h1>
+
+      {doc.effectiveDate && (
+        <p className="legal-date">EFFECTIVE DATE: {doc.effectiveDate}</p>
+      )}
+
+      {doc.intro.map((text) => (
+        <p key={text}>{text}</p>
+      ))}
+
+      {doc.sections.map((section) => (
+        <section className="legal-section" key={section.heading}>
+          <h2>{section.heading}</h2>
+
+          {section.content.map((block, i) => {
+            if (Array.isArray(block)) {
+              return (
+                <ul key={i}>
+                  {block.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              );
+            }
+
+            if (typeof block === "object") {
+              return <h3 key={i}>{block.sub}</h3>;
+            }
+
+            return <p key={i}>{block}</p>;
+          })}
+        </section>
+      ))}
+    </>
+  );
+}
+
+
+const sizeChart = [
+  { size: "S", length: '27"', chest: '22"', shoulder: '19"', sleeve: '23"' },
+  { size: "M", length: '28"', chest: '23"', shoulder: '20"', sleeve: '24"' },
+  { size: "L", length: '29"', chest: '24"', shoulder: '21"', sleeve: '25"' },
+  { size: "XL", length: '30"', chest: '25"', shoulder: '22"', sleeve: '26"' },
+];
+
+function Accordion({ title, children }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="accordion">
+      <button
+        type="button"
+        className="accordion-header"
+        onClick={() => setOpen((prev) => !prev)}
+        aria-expanded={open}
+      >
+        <span>{title}</span>
+        <span className={`accordion-chevron${open ? " open" : ""}`}>›</span>
+      </button>
+
+      {open && <div className="accordion-body">{children}</div>}
+    </div>
+  );
+}
+
 function App() {
   const headerRef = useRef(null);
 
@@ -90,7 +159,8 @@ const [showAbout, setShowAbout] = useState(false);
 const [showContact, setShowContact] = useState(false);
 const [showPrivacy, setShowPrivacy] = useState(false);
 const [showTerms, setShowTerms] = useState(false);
-  
+const [showSearch, setShowSearch] = useState(false);
+const [searchQuery, setSearchQuery] = useState("");  
 
 
   const [customerInfo, setCustomerInfo] = useState({
@@ -118,6 +188,7 @@ const [orderNumber, setOrderNumber] = useState("");
   setShowContact(false);
   setShowPrivacy(false);
   setShowTerms(false);
+  setShowSearch(false);
 };
 
 const goToShop = () => {
@@ -156,6 +227,13 @@ const goToPrivacy = () => {
 const goToTerms = () => {
   resetPages();
   setShowTerms(true);
+  window.scrollTo(0, 0);
+};
+
+const goToSearch = () => {
+  resetPages();
+  setSearchQuery("");
+  setShowSearch(true);
   window.scrollTo(0, 0);
 };
 
@@ -349,25 +427,26 @@ const handleCustomerChange = (e) => {
   </nav>
 
   {showMenu && (
-    <div className="menu-dropdown">
-      <button
-        type="button"
-        className="menu-close"
-        onClick={() => setShowMenu(false)}
-        aria-label="Close menu"
-      >
-        ×
-      </button>
+  <div className="menu-dropdown">
+    <button
+      type="button"
+      className="menu-close"
+      onClick={() => setShowMenu(false)}
+      aria-label="Close menu"
+    >
+      ×
+    </button>
 
-      <div className="menu-links">
-        <button type="button" onClick={goToShop}>SHOP</button>
-        <a href="#" onClick={(e) => { e.preventDefault(); goToAbout(); }}>ABOUT</a>
-        <a href="#" onClick={(e) => { e.preventDefault(); goToContact(); }}>CONTACT</a>
-      </div>
-
-      <div className="menu-brand-footer">BRIEFPAGE</div>
+    <div className="menu-links">
+      <button type="button" onClick={goToSearch}>SEARCH</button>
+      <button type="button" onClick={goToShop}>SHOP</button>
+      <button type="button" onClick={goToAbout}>ABOUT</button>
+      <button type="button" onClick={goToContact}>CONTACT</button>
     </div>
-  )}
+
+    <div className="menu-brand-footer">BRIEFPAGE</div>
+  </div>
+)}
 </header>
       <main className="confirmation-page">
 
@@ -779,11 +858,22 @@ if (showCheckout) {
 </div>
 
 <main className="info-page">
-  <h1>ABOUT BRIEFPAGE</h1>
+  <h1>ABOUT</h1>
   <p>
-    BRIEFPAGE is a streetwear label built for movement — bold
-    graphics layered over functional, everyday pieces. Every
-    drop is designed in-house and released in limited runs.
+    This is @BRIEFPAGE ARCHIVE GALLERY LLC, founded by John Opp
+    (Awesome Qwesy) and Joe Mensah.
+  </p>
+  <p>
+    Unique vintage graphics of real and imaginary lost and found
+    memories in movies, music &amp; social life pushed through self
+    discovery, film photography + nostalgia. With a small + motivated
+    team, we are doing our best to deliver strong design and quality
+    product routinely.
+  </p>
+  <p>
+    We have no corporate cosign or funding. We are using local
+    printers, everything is hand-packed, we create all the
+    documentaries.
   </p>
 </main>
       </div>
@@ -862,12 +952,7 @@ if (showCheckout) {
         </header>
 
         <main className="info-page">
-          <h1>PRIVACY POLICY</h1>
-          <p>
-            This section will outline how BRIEFPAGE collects, uses, and
-            protects your information. Replace this placeholder text
-            with your real privacy policy before launch.
-          </p>
+          <LegalDocument doc={privacyPolicy} />
         </main>
       </div>
     );
@@ -902,12 +987,7 @@ if (showCheckout) {
         </header>
 
         <main className="info-page">
-          <h1>TERMS AND CONDITIONS</h1>
-          <p>
-            This section will outline the terms and conditions for using
-            the BRIEFPAGE website and purchasing products. Replace this
-            placeholder text with your real terms before launch.
-          </p>
+          <LegalDocument doc={termsAndConditions} />
         </main>
       </div>
     );
@@ -1149,6 +1229,63 @@ if (showCheckout) {
               {(selectedProduct.price * quantity).toLocaleString()}
             </button>
 
+                        <div className="product-accordions" key={selectedProduct.id}>
+              <Accordion title="SIZE CHART">
+                <table className="size-table">
+                  <thead>
+                    <tr>
+                      <th>SIZES</th>
+                      <th>LENGTH</th>
+                      <th>CHEST</th>
+                      <th>SHOULDER</th>
+                      <th>SLEEVE LENGTH</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {sizeChart.map((row) => (
+                      <tr key={row.size}>
+                        <td>{row.size}</td>
+                        <td>{row.length}</td>
+                        <td>{row.chest}</td>
+                        <td>{row.shoulder}</td>
+                        <td>{row.sleeve}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </Accordion>
+
+              <Accordion title="CARE INFO">
+                <p>Wash cold, inside out, with like colors.</p>
+                <p>
+                  Hang dry or tumble dry low to protect the prints and
+                  graphics. Do not bleach, and do not iron directly on
+                  the graphics.
+                </p>
+              </Accordion>
+
+              <Accordion title="SHIPPING">
+                <p>Every order is hand-packed.</p>
+                <p>
+                  After you place your order, our team will contact you
+                  by phone to arrange delivery and confirm your delivery
+                  time.
+                </p>
+              </Accordion>
+
+              <Accordion title="EXCHANGES / RETURN">
+                <p>
+                  Items must be unused, unworn, and in original
+                  condition. Refunds are processed after returned items
+                  have been inspected.
+                </p>
+                <p>
+                  For any questions or concerns, reach out to us at
+                  hello@briefpagearchive.gallery
+                </p>
+              </Accordion>
+            </div>
+
             <button
               className="continue-shopping"
               onClick={closeProduct}
@@ -1156,6 +1293,109 @@ if (showCheckout) {
               ← CONTINUE SHOPPING
             </button>
           </div>
+        </main>
+
+        <section className="recommended">
+          <h2 className="recommended-title">RECOMMENDED PRODUCTS</h2>
+
+          <div className="recommended-grid">
+            {products
+              .filter((product) => product.id !== selectedProduct.id)
+              .slice(0, 4)
+              .map((product) => (
+                <div
+                  className="product"
+                  key={product.id}
+                  onClick={() => openProduct(product)}
+                >
+                  <div className="product-image">
+                    <img src={product.image} alt={product.name} />
+                  </div>
+
+                  <div className="product-info">
+                    <h3>{product.name}</h3>
+                    <p>GH₵ {product.price}</p>
+                  </div>
+                </div>
+              ))}
+          </div>
+        </section>
+      </div>
+    );
+  }
+
+    // SEARCH PAGE
+  if (showSearch) {
+    const query = searchQuery.trim().toLowerCase();
+    const searchResults = products.filter(
+      (product) =>
+        product.name.toLowerCase().includes(query) ||
+        product.category.toLowerCase().includes(query)
+    );
+
+    return (
+      <div className="app">
+        <header className="site-header">
+          <div className="brand-marquee">
+            <div className="marquee-track">
+              <span>BRIEFPAGE</span>
+              <span>BRIEFPAGE</span>
+              <span>BRIEFPAGE</span>
+              <span>BRIEFPAGE</span>
+            </div>
+          </div>
+
+          <nav className="navbar">
+            <button onClick={goToShop}>← SHOP</button>
+
+            <div className="nav-links">
+              <a href="#" onClick={(e) => { e.preventDefault(); goToAbout(); }}>ABOUT</a>
+              <a href="#" onClick={(e) => { e.preventDefault(); goToContact(); }}>CONTACT</a>
+            </div>
+
+            <button onClick={() => setShowCart(true)}>
+              CART ({cartCount})
+            </button>
+          </nav>
+        </header>
+
+        <main className="shop search-page">
+          <input
+            className="search-input"
+            type="text"
+            placeholder="SEARCH"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            autoFocus
+          />
+
+          {query && (
+            <>
+              <p className="search-count">
+                {searchResults.length}{" "}
+                {searchResults.length === 1 ? "RESULT" : "RESULTS"}
+              </p>
+
+              <div className="products">
+                {searchResults.map((product) => (
+                  <div
+                    className="product"
+                    key={product.id}
+                    onClick={() => openProduct(product)}
+                  >
+                    <div className="product-image">
+                      <img src={product.image} alt={product.name} />
+                    </div>
+
+                    <div className="product-info">
+                      <h3>{product.name}</h3>
+                      <p>GH₵ {product.price}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
         </main>
       </div>
     );
@@ -1241,10 +1481,7 @@ if (showCheckout) {
       </div>
 
       <main className="shop" id="shop">
-  <div className="shop-heading">
-          <h1>NEW DROP</h1>
-          <p>{filteredProducts.length} PRODUCTS</p>
-        </div>
+
 
         <div className="products">
           {filteredProducts.map((product) => (
@@ -1284,10 +1521,20 @@ if (showCheckout) {
   <button type="button" onClick={goToContact}>CONTACT</button>
   <button type="button" onClick={goToPrivacy}>PRIVACY POLICY</button>
   <button type="button" onClick={goToTerms}>TERMS AND CONDITIONS</button>
-  {/* TODO: replace href="#" with your real Instagram link */}
-  <a href="#" target="_blank" rel="noopener noreferrer">INSTAGRAM</a>
-  {/* TODO: replace href="#" with your real YouTube link */}
-  <a href="#" target="_blank" rel="noopener noreferrer">YOUTUBE</a>
+  <a
+  href="https://www.instagram.com/briefpagearchive.gallery"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  INSTAGRAM
+</a>
+<a
+  href="https://youtube.com/@briefpagearchive.gallery"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  YOUTUBE
+</a>
 </div>
     </div>
   );
