@@ -1,35 +1,35 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useLayoutEffect } from "react";
 import "./index.css";
 import { privacyPolicy, termsAndConditions } from "./legalContent";
 
 const products = [
   {
-  id: 7,
-  name: "SKULL GRAPHIC TEE",
-  price: 450,
-  category: "T-SHIRTS",
-  image: "/products/skull-graphic-tee.png",
-},
-{
-  id: 8,
-  name: "CHAOS GRAPHIC LONG SLEEVE",
-  price: 550,
-  category: "HOODIES",
-  image: "/products/chaos-graphic-long-sleeve.png",
-},
+    id: 7,
+    name: "SKULL GRAPHIC TEE",
+    price: 450,
+    category: "T-SHIRTS",
+    image: "/products/skull-graphic-tee.png",
+  },
   {
-  id: 1,
-  name: "BAGGY JEANS",
-  price: 200,
-  category: "BOTTOMS",
-  image: "/products/baggy jeans.PNG",
-},
+    id: 8,
+    name: "CHAOS GRAPHIC LONG SLEEVE",
+    price: 550,
+    category: "HOODIES",
+    image: "/products/chaos-graphic-long-sleeve.png",
+  },
+  {
+    id: 1,
+    name: "BAGGY JEANS",
+    price: 200,
+    category: "BOTTOMS",
+    image: "/products/baggy jeans.PNG",
+  },
   {
     id: 2,
     name: "RED SHIRT",
     price: 250,
     category: "T-SHIRTS",
-    image: "/products/redshirt.PNG",   
+    image: "/products/redshirt.PNG",
   },
   {
     id: 3,
@@ -43,7 +43,7 @@ const products = [
     name: "BREIFPAGE CAP",
     price: 250,
     category: "ACCESSORIES",
-    image:"/products/briefpage cap.PNG",
+    image: "/products/briefpage cap.PNG",
   },
   {
     id: 5,
@@ -101,7 +101,6 @@ function LegalDocument({ doc }) {
   );
 }
 
-
 const sizeChart = [
   { size: "S", length: '27"', chest: '22"', shoulder: '19"', sleeve: '23"' },
   { size: "M", length: '28"', chest: '23"', shoulder: '20"', sleeve: '24"' },
@@ -155,87 +154,105 @@ function App() {
   const [orderComplete, setOrderComplete] = useState(false);
   const [completedOrder, setCompletedOrder] = useState([]);
   const [showMenu, setShowMenu] = useState(false);
-const [showAbout, setShowAbout] = useState(false);
-const [showContact, setShowContact] = useState(false);
-const [showPrivacy, setShowPrivacy] = useState(false);
-const [showTerms, setShowTerms] = useState(false);
-const [showSearch, setShowSearch] = useState(false);
-const [searchQuery, setSearchQuery] = useState("");  
-
+  const [showAbout, setShowAbout] = useState(false);
+  const [showContact, setShowContact] = useState(false);
+  const [showPrivacy, setShowPrivacy] = useState(false);
+  const [showTerms, setShowTerms] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const [customerInfo, setCustomerInfo] = useState({
-  fullName: "",
-  phone: "",
-  email: "",
-  address: "",
-  city: "",
-  network: "",
-  momoNumber: "",
-});
+    fullName: "",
+    phone: "",
+    email: "",
+    address: "",
+    city: "",
+    network: "",
+    momoNumber: "",
+  });
 
-const [orderNumber, setOrderNumber] = useState("");
+  const [orderNumber, setOrderNumber] = useState("");
 
   const [quantity, setQuantity] = useState(1);
   const [size, setSize] = useState("M");
 
+  // Measure the moving BRIEFPAGE banner so the menu can open right below it
+  useLayoutEffect(() => {
+    if (!showMenu) return;
+
+    const updateMarqueeHeight = () => {
+      const marquee = document.querySelector(".brand-marquee");
+      if (marquee) {
+        document.documentElement.style.setProperty(
+          "--marquee-height",
+          `${marquee.offsetHeight}px`
+        );
+      }
+    };
+
+    updateMarqueeHeight();
+    window.addEventListener("resize", updateMarqueeHeight);
+    return () => window.removeEventListener("resize", updateMarqueeHeight);
+  }, [showMenu]);
+
   const resetPages = () => {
-  setOrderComplete(false);
-  setShowCheckout(false);
-  setShowCart(false);
-  setSelectedProduct(null);
-  setShowMenu(false);
-  setShowAbout(false);
-  setShowContact(false);
-  setShowPrivacy(false);
-  setShowTerms(false);
-  setShowSearch(false);
-};
+    setOrderComplete(false);
+    setShowCheckout(false);
+    setShowCart(false);
+    setSelectedProduct(null);
+    setShowMenu(false);
+    setShowAbout(false);
+    setShowContact(false);
+    setShowPrivacy(false);
+    setShowTerms(false);
+    setShowSearch(false);
+  };
 
-const goToShop = () => {
-  resetPages();
-  window.scrollTo(0, 0);
-};
+  const goToShop = () => {
+    resetPages();
+    window.scrollTo(0, 0);
+  };
 
-const goToSection = (sectionId) => {
-  goToShop();
-  setTimeout(() => {
-    const el = document.getElementById(sectionId);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  }, 50);
-};
+  const goToSection = (sectionId) => {
+    goToShop();
+    setTimeout(() => {
+      const el = document.getElementById(sectionId);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 50);
+  };
 
-const goToAbout = () => {
-  resetPages();
-  setShowAbout(true);
-  window.scrollTo(0, 0);
-};
+  const goToAbout = () => {
+    resetPages();
+    setShowAbout(true);
+    window.scrollTo(0, 0);
+  };
 
-const goToContact = () => {
-  resetPages();
-  setShowContact(true);
-  window.scrollTo(0, 0);
-};
+  const goToContact = () => {
+    resetPages();
+    setShowContact(true);
+    window.scrollTo(0, 0);
+  };
 
-const goToPrivacy = () => {
-  resetPages();
-  setShowPrivacy(true);
-  window.scrollTo(0, 0);
-};
+  const goToPrivacy = () => {
+    resetPages();
+    setShowPrivacy(true);
+    window.scrollTo(0, 0);
+  };
 
-const goToTerms = () => {
-  resetPages();
-  setShowTerms(true);
-  window.scrollTo(0, 0);
-};
+  const goToTerms = () => {
+    resetPages();
+    setShowTerms(true);
+    window.scrollTo(0, 0);
+  };
 
-const goToSearch = () => {
-  resetPages();
-  setSearchQuery("");
-  setShowSearch(true);
-  window.scrollTo(0, 0);
-};
+  const goToSearch = () => {
+    resetPages();
+    setSearchQuery("");
+    setShowSearch(true);
+    window.scrollTo(0, 0);
+  };
 
   const categories = [
     "ALL",
@@ -313,55 +330,54 @@ const goToSearch = () => {
     );
   };
 
-const handleCustomerChange = (e) => {
-  const { name, value } = e.target;
+  const handleCustomerChange = (e) => {
+    const { name, value } = e.target;
 
-  setCustomerInfo((prev) => ({
-    ...prev,
-    [name]: value,
-  }));
-};
+    setCustomerInfo((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   const placeOrder = () => {
-  const {
-    fullName,
-    phone,
-    email,
-    address,
-    city,
-    network,
-    momoNumber,
-  } = customerInfo;
+    const {
+      fullName,
+      phone,
+      email,
+      address,
+      city,
+      network,
+      momoNumber,
+    } = customerInfo;
 
-  if (
-    !fullName ||
-    !phone ||
-    !email ||
-    !address ||
-    !city ||
-    !network ||
-    !momoNumber
-  ) {
-    alert("Please complete all delivery and payment information.");
-    return;
-  }
+    if (
+      !fullName ||
+      !phone ||
+      !email ||
+      !address ||
+      !city ||
+      !network ||
+      !momoNumber
+    ) {
+      alert("Please complete all delivery and payment information.");
+      return;
+    }
 
-  const newOrderNumber =
-    "BP-" + Math.floor(100000 + Math.random() * 900000);
+    const newOrderNumber =
+      "BP-" + Math.floor(100000 + Math.random() * 900000);
 
-  setOrderNumber(newOrderNumber);
+    setOrderNumber(newOrderNumber);
 
-  // Save the order before clearing the cart
-  setCompletedOrder([...cart]);
+    // Save the order before clearing the cart
+    setCompletedOrder([...cart]);
 
-  // Clear the customer's cart
-  setCart([]);
+    // Clear the customer's cart
+    setCart([]);
 
-  // Show confirmation page
-  setShowCheckout(false);
-  setOrderComplete(true);
-};
-
+    // Show confirmation page
+    setShowCheckout(false);
+    setOrderComplete(true);
+  };
 
   // TOTAL NUMBER OF ITEMS
   const cartCount = cart.reduce(
@@ -376,9 +392,9 @@ const handleCustomerChange = (e) => {
   );
 
   const completedOrderTotal = completedOrder.reduce(
-  (total, item) => total + item.price * item.quantity,
-  0
-);
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
 
   const openProduct = (product) => {
     setSelectedProduct(product);
@@ -392,438 +408,357 @@ const handleCustomerChange = (e) => {
     setSelectedProduct(null);
   };
 
+  // ORDER CONFIRMATION PAGE
   if (orderComplete) {
-  return (
-    <div className="app">
-
-      <header className="site-header">
-  <div className="brand-marquee">
-    <div className="marquee-track">
-      <span>BRIEFPAGE</span>
-      <span>BRIEFPAGE</span>
-      <span>BRIEFPAGE</span>
-      <span>BRIEFPAGE</span>
-    </div>
-  </div>
-
-  <nav className="navbar">
-   <button
-  type="button"
-  className="menu-button"
-  onClick={() => setShowMenu((prev) => !prev)}
-  aria-label={showMenu ? "Close menu" : "Open menu"}
->
-  {showMenu ? "" : "MENU"}
-</button>
-
-    <button onClick={() => setOrderComplete(false)}>BRIEFPAGE</button>
-
-    <div className="nav-links">
-      <a href="#about">ABOUT</a>
-      <a href="#contact">CONTACT</a>
-    </div>
-
-    <button onClick={() => setOrderComplete(false)}>SHOP</button>
-  </nav>
-
-  {showMenu && (
-  <div className="menu-dropdown">
-    <button
-      type="button"
-      className="menu-close"
-      onClick={() => setShowMenu(false)}
-      aria-label="Close menu"
-    >
-      ×
-    </button>
-
-    <div className="menu-links">
-      <button type="button" onClick={goToSearch}>SEARCH</button>
-      <button type="button" onClick={goToShop}>SHOP</button>
-      <button type="button" onClick={goToAbout}>ABOUT</button>
-      <button type="button" onClick={goToContact}>CONTACT</button>
-    </div>
-
-    <div className="menu-brand-footer">BRIEFPAGE</div>
-  </div>
-)}
-</header>
-      <main className="confirmation-page">
-
-        {/* HEADER */}
-
-        <div className="confirmation-header">
-
-          <div className="success-icon">
-            ✓
+    return (
+      <div className="app">
+        <header className="site-header">
+          <div className="brand-marquee">
+            <div className="marquee-track">
+              <span>BRIEFPAGE</span>
+              <span>BRIEFPAGE</span>
+              <span>BRIEFPAGE</span>
+              <span>BRIEFPAGE</span>
+            </div>
           </div>
 
-          <p className="confirmation-label">
-            ORDER CONFIRMED
-          </p>
+          <nav className="navbar">
+            <button
+              type="button"
+              className="menu-button"
+              onClick={() => setShowMenu((prev) => !prev)}
+              aria-label={showMenu ? "Close menu" : "Open menu"}
+            >
+              MENU
+            </button>
 
-          <h1>
-            THANK YOU,
-            <br />
-            {customerInfo.fullName.split(" ")[0].toUpperCase()}
-          </h1>
+            <button onClick={() => setOrderComplete(false)}>BRIEFPAGE</button>
 
-          <p className="confirmation-subtitle">
-            We've received your order and are preparing it for delivery.
-          </p>
-
-          <div className="order-number">
-            ORDER #{orderNumber}
-          </div>
-
-        </div>
-
-
-        {/* ORDER DETAILS */}
-
-        <div className="confirmation-content">
-
-          <section className="confirmation-section">
-
-            <div className="section-heading">
-              <h2>YOUR ORDER</h2>
-              <span>
-  {completedOrder.reduce(
-    (total, item) => total + item.quantity,
-    0
-  )} ITEMS
-</span>
+            <div className="nav-links">
+              <a href="#" onClick={(e) => { e.preventDefault(); goToAbout(); }}>ABOUT</a>
+              <a href="#" onClick={(e) => { e.preventDefault(); goToContact(); }}>CONTACT</a>
             </div>
 
-            <div className="confirmation-items">
+            <button onClick={() => setOrderComplete(false)}>SHOP</button>
+          </nav>
 
-              {cart.map((item) => (
-                <div
-                  className="confirmation-item"
-                  key={item.cartId}
+          {showMenu && (
+            <div className="menu-overlay" onClick={() => setShowMenu(false)}></div>
+          )}
+
+          {showMenu && (
+            <div className="menu-dropdown">
+              <button
+                type="button"
+                className="menu-close"
+                onClick={() => setShowMenu(false)}
+                aria-label="Close menu"
+              >
+                ×
+              </button>
+
+              <div className="menu-links">
+                <button type="button" onClick={goToSearch}>SEARCH</button>
+                <button type="button" onClick={goToShop}>SHOP</button>
+                <button type="button" onClick={goToAbout}>ABOUT</button>
+                <button type="button" onClick={goToContact}>CONTACT</button>
+              </div>
+
+              <div className="menu-brand-footer">BRIEFPAGE ARCHIVE LLC</div>
+            </div>
+          )}
+        </header>
+
+        <main className="confirmation-page">
+          {/* HEADER */}
+
+          <div className="confirmation-header">
+            <div className="success-icon">✓</div>
+
+            <p className="confirmation-label">ORDER CONFIRMED</p>
+
+            <h1>
+              THANK YOU,
+              <br />
+              {customerInfo.fullName.split(" ")[0].toUpperCase()}
+            </h1>
+
+            <p className="confirmation-subtitle">
+              We've received your order and are preparing it for delivery.
+            </p>
+
+            <div className="order-number">ORDER #{orderNumber}</div>
+          </div>
+
+          {/* ORDER DETAILS */}
+
+          <div className="confirmation-content">
+            <section className="confirmation-section">
+              <div className="section-heading">
+                <h2>YOUR ORDER</h2>
+                <span>
+                  {completedOrder.reduce(
+                    (total, item) => total + item.quantity,
+                    0
+                  )}{" "}
+                  ITEMS
+                </span>
+              </div>
+
+              <div className="confirmation-items">
+                {cart.map((item) => (
+                  <div className="confirmation-item" key={item.cartId}>
+                    <img src={item.image} alt={item.name} />
+
+                    <div className="confirmation-item-info">
+                      <h3>{item.name}</h3>
+
+                      <p>
+                        SIZE {item.size} · QTY {item.quantity}
+                      </p>
+                    </div>
+
+                    <strong>
+                      GH₵ {(item.price * item.quantity).toLocaleString()}
+                    </strong>
+                  </div>
+                ))}
+              </div>
+
+              <div className="confirmation-total">
+                <span>TOTAL</span>
+
+                <strong>GH₵ {completedOrderTotal.toLocaleString()}</strong>
+              </div>
+            </section>
+
+            {/* DELIVERY + PAYMENT */}
+
+            <div className="confirmation-info-grid">
+              <section className="info-card">
+                <span>DELIVERY</span>
+
+                <h3>{customerInfo.fullName}</h3>
+
+                <p>{customerInfo.address}</p>
+
+                <p>{customerInfo.city}</p>
+
+                <p>{customerInfo.phone}</p>
+              </section>
+
+              <section className="info-card">
+                <span>PAYMENT</span>
+
+                <h3>MOBILE MONEY</h3>
+
+                <p>{customerInfo.network}</p>
+
+                <p>{customerInfo.momoNumber}</p>
+              </section>
+            </div>
+
+            {/* NEXT STEP */}
+
+            <div className="confirmation-next">
+              <div>
+                <span>WHAT HAPPENS NEXT</span>
+
+                <p>
+                  Our team will contact you using the phone number
+                  provided to arrange delivery and confirm your order.
+                </p>
+              </div>
+
+              <div className="confirmation-status">
+                <span className="status-dot"></span>
+                ORDER RECEIVED
+              </div>
+            </div>
+
+            <button
+              className="confirmation-shop-button"
+              onClick={() => setOrderComplete(false)}
+            >
+              CONTINUE SHOPPING →
+            </button>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  // CHECKOUT PAGE
+  if (showCheckout) {
+    return (
+      <div className="app">
+        <header className="site-header">
+          <div className="brand-marquee">
+            <div className="marquee-track">
+              <span>BRIEFPAGE</span>
+              <span>BRIEFPAGE</span>
+              <span>BRIEFPAGE</span>
+              <span>BRIEFPAGE</span>
+            </div>
+          </div>
+
+          <nav className="navbar">
+            <button
+              onClick={() => {
+                setShowCheckout(false);
+                setShowCart(true);
+              }}
+            >
+              ← CART
+            </button>
+
+            <div className="nav-links">
+              <a href="#" onClick={(e) => { e.preventDefault(); goToAbout(); }}>ABOUT</a>
+              <a href="#" onClick={(e) => { e.preventDefault(); goToContact(); }}>CONTACT</a>
+            </div>
+
+            <button>CART ({cartCount})</button>
+          </nav>
+        </header>
+
+        <main className="checkout-page">
+          <div className="checkout-heading">
+            <h1>CHECKOUT</h1>
+          </div>
+
+          <div className="checkout-layout">
+            {/* CUSTOMER INFORMATION */}
+
+            <section className="customer-form">
+              <h2>DELIVERY INFORMATION</h2>
+
+              <label>FULL NAME</label>
+              <input
+                id="full-name"
+                name="fullName"
+                type="text"
+                placeholder="FULL NAME"
+                value={customerInfo.fullName}
+                onChange={handleCustomerChange}
+              />
+
+              <label>PHONE NUMBER</label>
+              <input
+                id="phone"
+                name="phone"
+                type="tel"
+                placeholder="PHONE NUMBER"
+                value={customerInfo.phone}
+                onChange={handleCustomerChange}
+              />
+
+              <label>EMAIL</label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="EMAIL"
+                value={customerInfo.email}
+                onChange={handleCustomerChange}
+              />
+
+              <label>DELIVERY ADDRESS</label>
+              <textarea
+                id="address"
+                name="address"
+                placeholder="DELIVERY ADDRESS"
+                value={customerInfo.address}
+                onChange={handleCustomerChange}
+              />
+
+              <label>CITY</label>
+              <input
+                id="city"
+                name="city"
+                type="text"
+                placeholder="CITY"
+                value={customerInfo.city}
+                onChange={handleCustomerChange}
+              />
+
+              <h2 className="payment-title">PAYMENT METHOD</h2>
+
+              <div className="payment-options">
+                <button type="button" className="payment-option active">
+                  MOBILE MONEY
+                </button>
+
+                <button type="button" className="payment-option">
+                  CARD
+                </button>
+              </div>
+
+              <div className="mobile-money-details">
+                <label>MOBILE MONEY NETWORK</label>
+
+                <select
+                  id="network"
+                  name="network"
+                  value={customerInfo.network}
+                  onChange={handleCustomerChange}
                 >
+                  <option value="">SELECT NETWORK</option>
+                  <option value="MTN">MTN MOBILE MONEY</option>
+                  <option value="Telecel">TELECEL CASH</option>
+                  <option value="AirtelTigo">AIRTELTIGO MONEY</option>
+                </select>
 
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                  />
+                <label>MOBILE MONEY NUMBER</label>
 
-                  <div className="confirmation-item-info">
+                <input
+                  id="momo-number"
+                  name="momoNumber"
+                  type="tel"
+                  placeholder="e.g. 024 000 0000"
+                  value={customerInfo.momoNumber}
+                  onChange={handleCustomerChange}
+                />
+              </div>
 
+              <button className="place-order-button" onClick={placeOrder}>
+                PLACE ORDER →
+              </button>
+            </section>
+
+            {/* ORDER SUMMARY */}
+
+            <section className="order-summary">
+              <h2>YOUR ORDER</h2>
+
+              {completedOrder.map((item) => (
+                <div className="summary-item" key={item.cartId}>
+                  <img src={item.image} alt={item.name} />
+
+                  <div>
                     <h3>{item.name}</h3>
 
-                    <p>
-                      SIZE {item.size} · QTY {item.quantity}
-                    </p>
+                    <p>SIZE: {item.size}</p>
 
+                    <p>QUANTITY: {item.quantity}</p>
                   </div>
 
                   <strong>
                     GH₵ {(item.price * item.quantity).toLocaleString()}
                   </strong>
-
                 </div>
               ))}
 
-            </div>
+              <div className="summary-total">
+                <span>TOTAL</span>
 
-            <div className="confirmation-total">
-
-              <span>TOTAL</span>
-
-              <strong>
-                GH₵ {completedOrderTotal.toLocaleString()}
-              </strong>
-
-            </div>
-
-          </section>
-
-
-          {/* DELIVERY + PAYMENT */}
-
-          <div className="confirmation-info-grid">
-
-            <section className="info-card">
-
-              <span>DELIVERY</span>
-
-              <h3>{customerInfo.fullName}</h3>
-
-              <p>{customerInfo.address}</p>
-
-              <p>{customerInfo.city}</p>
-
-              <p>{customerInfo.phone}</p>
-
-            </section>
-
-
-            <section className="info-card">
-
-              <span>PAYMENT</span>
-
-              <h3>MOBILE MONEY</h3>
-
-              <p>{customerInfo.network}</p>
-
-              <p>{customerInfo.momoNumber}</p>
-
-            </section>
-
-          </div>
-
-
-          {/* NEXT STEP */}
-
-          <div className="confirmation-next">
-
-            <div>
-
-              <span>WHAT HAPPENS NEXT</span>
-
-              <p>
-                Our team will contact you using the phone number
-                provided to arrange delivery and confirm your order.
-              </p>
-
-            </div>
-
-            <div className="confirmation-status">
-              <span className="status-dot"></span>
-              ORDER RECEIVED
-            </div>
-
-          </div>
-
-
-          <button
-            className="confirmation-shop-button"
-            onClick={() => setOrderComplete(false)}
-          >
-            CONTINUE SHOPPING →
-          </button>
-
-        </div>
-
-      </main>
-
-    </div>
-  );
-}
-
-  // CHECKOUT PAGE
-if (showCheckout) {
-  return (
-    <div className="app">
-
-  <header className="site-header">
-    <div className="brand-marquee">
-      <div className="marquee-track">
-        <span>BRIEFPAGE</span>
-        <span>BRIEFPAGE</span>
-        <span>BRIEFPAGE</span>
-        <span>BRIEFPAGE</span>
-      </div>
-    </div>
-
-    <nav className="navbar">
-      <button
-        onClick={() => {
-          setShowCheckout(false);
-          setShowCart(true);
-        }}
-      >
-        ← CART
-      </button>
-
-      <div className="nav-links">
-        <a href="#about" onClick={(e) => { e.preventDefault(); goToSection("about"); }}>ABOUT</a>
-        <a href="#contact" onClick={(e) => { e.preventDefault(); goToSection("contact"); }}>CONTACT</a>
-      </div>
-
-      <button>
-        CART ({cartCount})
-      </button>
-    </nav>
-  </header>
-
-  <main className="checkout-page">
-
-        <div className="checkout-heading">
-          <h1>CHECKOUT</h1>
-        </div>
-
-        <div className="checkout-layout">
-
-          {/* CUSTOMER INFORMATION */}
-
-          <section className="customer-form">
-
-            <h2>DELIVERY INFORMATION</h2>
-
-            <label>FULL NAME</label>
-            <input
-              id="full-name"
-              name="fullName"
-              type="text"
-              placeholder="FULL NAME"
-              value={customerInfo.fullName}
-              onChange={handleCustomerChange}
-            />
-
-            <label>PHONE NUMBER</label>
-            <input
-              id="phone"
-              name="phone"
-              type="tel"
-              placeholder="PHONE NUMBER"
-              value={customerInfo.phone}
-              onChange={handleCustomerChange}
-            />
-
-            <label>EMAIL</label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              placeholder="EMAIL"
-              value={customerInfo.email}
-              onChange={handleCustomerChange}
-            />
-
-            <label>DELIVERY ADDRESS</label>
-            <textarea
-              id="address"
-              name="address"
-              placeholder="DELIVERY ADDRESS"
-              value={customerInfo.address}
-              onChange={handleCustomerChange}
-            />
-
-            <label>CITY</label>
-            <input
-              id="city"
-              name="city"
-              type="text"
-              placeholder="CITY"
-              value={customerInfo.city}
-              onChange={handleCustomerChange}
-            />
-
-            <h2 className="payment-title">
-              PAYMENT METHOD
-            </h2>
-
-            <div className="payment-options">
-
-              <button
-                type="button"
-                className="payment-option active"
-              >
-                MOBILE MONEY
-              </button>
-
-              <button
-                type="button"
-                className="payment-option"
-              >
-                CARD
-              </button>
-
-            </div>
-
-            <div className="mobile-money-details">
-
-              <label>MOBILE MONEY NETWORK</label>
-
-              <select
-                id="network"
-                name="network"
-                value={customerInfo.network}
-                onChange={handleCustomerChange}
-              >
-                <option value="">SELECT NETWORK</option>
-                <option value="MTN">MTN MOBILE MONEY</option>
-                <option value="Telecel">TELECEL CASH</option>
-                <option value="AirtelTigo">
-                  AIRTELTIGO MONEY
-                </option>
-              </select>
-
-              <label>MOBILE MONEY NUMBER</label>
-
-              <input
-                id="momo-number"
-                name="momoNumber"
-                type="tel"
-                placeholder="e.g. 024 000 0000"
-                value={customerInfo.momoNumber}
-                onChange={handleCustomerChange}
-              />
-
-            </div>
-
-            <button
-              className="place-order-button"
-              onClick={placeOrder}
-            >
-              PLACE ORDER →
-            </button>
-
-          </section>
-
-
-          {/* ORDER SUMMARY */}
-
-          <section className="order-summary">
-
-            <h2>YOUR ORDER</h2>
-
-            {completedOrder.map((item) => (
-              <div
-                className="summary-item"
-                key={item.cartId}
-              >
-                <img
-                  src={item.image}
-                  alt={item.name}
-                />
-
-                <div>
-                  <h3>{item.name}</h3>
-
-                  <p>SIZE: {item.size}</p>
-
-                  <p>QUANTITY: {item.quantity}</p>
-                </div>
-
-                <strong>
-                  GH₵ {(item.price * item.quantity).toLocaleString()}
-                </strong>
-
+                <strong>GH₵ {cartTotal.toLocaleString()}</strong>
               </div>
-            ))}
-
-            <div className="summary-total">
-
-              <span>TOTAL</span>
-
-              <strong>
-                GH₵ {cartTotal.toLocaleString()}
-              </strong>
-
-            </div>
-
-          </section>
-
-        </div>
-
-      </main>
-
-    </div>
-  );
-}
+            </section>
+          </div>
+        </main>
+      </div>
+    );
+  }
 
   // ABOUT PAGE
   if (showAbout) {
@@ -854,28 +789,28 @@ if (showCheckout) {
         </header>
 
         <div className="info-page-image">
-  <img src="/products/about page.JPG" alt="BRIEFPAGE studio" />
-</div>
+          <img src="/products/about page.JPG" alt="BRIEFPAGE studio" />
+        </div>
 
-<main className="info-page">
-  <h1>ABOUT</h1>
-  <p>
-    This is @BRIEFPAGE ARCHIVE GALLERY LLC, founded by John Opp
-    (Awesome Qwesy) and Joe Mensah.
-  </p>
-  <p>
-    Unique vintage graphics of real and imaginary lost and found
-    memories in movies, music &amp; social life pushed through self
-    discovery, film photography + nostalgia. With a small + motivated
-    team, we are doing our best to deliver strong design and quality
-    product routinely.
-  </p>
-  <p>
-    We have no corporate cosign or funding. We are using local
-    printers, everything is hand-packed, we create all the
-    documentaries.
-  </p>
-</main>
+        <main className="info-page">
+          <h1>ABOUT</h1>
+          <p>
+            This is @BRIEFPAGE ARCHIVE GALLERY LLC, founded by John Opp
+            (Awesome Qwesy) and Joe Mensah.
+          </p>
+          <p>
+            Unique vintage graphics of real and imaginary lost and found
+            memories in movies, music &amp; social life pushed through self
+            discovery, film photography + nostalgia. With a small + motivated
+            team, we are doing our best to deliver strong design and quality
+            product routinely.
+          </p>
+          <p>
+            We have no corporate cosign or funding. We are using local
+            printers, everything is hand-packed, we create all the
+            documentaries.
+          </p>
+        </main>
       </div>
     );
   }
@@ -958,7 +893,7 @@ if (showCheckout) {
     );
   }
 
-    // TERMS AND CONDITIONS PAGE
+  // TERMS AND CONDITIONS PAGE
   if (showTerms) {
     return (
       <div className="app">
@@ -996,34 +931,30 @@ if (showCheckout) {
   // CART PAGE
   if (showCart) {
     return (
-     <div className="app">
-  <header className="site-header">
-    <div className="brand-marquee">
-      <div className="marquee-track">
-        <span>BRIEFPAGE</span>
-        <span>BRIEFPAGE</span>
-        <span>BRIEFPAGE</span>
-        <span>BRIEFPAGE</span>
-      </div>
-    </div>
+      <div className="app">
+        <header className="site-header">
+          <div className="brand-marquee">
+            <div className="marquee-track">
+              <span>BRIEFPAGE</span>
+              <span>BRIEFPAGE</span>
+              <span>BRIEFPAGE</span>
+              <span>BRIEFPAGE</span>
+            </div>
+          </div>
 
-    <nav className="navbar">
-      <button onClick={() => setShowCart(false)}>
-        ← SHOP
-      </button>
+          <nav className="navbar">
+            <button onClick={() => setShowCart(false)}>← SHOP</button>
 
-      <div className="nav-links">
-        <a href="#about" onClick={(e) => { e.preventDefault(); goToSection("about"); }}>ABOUT</a>
-        <a href="#contact" onClick={(e) => { e.preventDefault(); goToSection("contact"); }}>CONTACT</a>
-      </div>
+            <div className="nav-links">
+              <a href="#" onClick={(e) => { e.preventDefault(); goToAbout(); }}>ABOUT</a>
+              <a href="#" onClick={(e) => { e.preventDefault(); goToContact(); }}>CONTACT</a>
+            </div>
 
-      <button>
-        CART ({cartCount})
-      </button>
-    </nav>
-  </header>
+            <button>CART ({cartCount})</button>
+          </nav>
+        </header>
 
-  <main className="cart-page">
+        <main className="cart-page">
           <div className="cart-heading">
             <h1>YOUR CART</h1>
             <p>{cartCount} ITEMS</p>
@@ -1052,38 +983,27 @@ if (showCheckout) {
                       <p>GH₵ {item.price}</p>
 
                       <div className="cart-controls">
-                        <button
-                          onClick={() =>
-                            decreaseQuantity(item.cartId)
-                          }
-                        >
+                        <button onClick={() => decreaseQuantity(item.cartId)}>
                           −
                         </button>
 
                         <span>{item.quantity}</span>
 
-                        <button
-                          onClick={() =>
-                            increaseQuantity(item.cartId)
-                          }
-                        >
+                        <button onClick={() => increaseQuantity(item.cartId)}>
                           +
                         </button>
                       </div>
 
                       <button
                         className="remove-button"
-                        onClick={() =>
-                          removeFromCart(item.cartId)
-                        }
+                        onClick={() => removeFromCart(item.cartId)}
                       >
                         REMOVE
                       </button>
                     </div>
 
                     <strong>
-                      GH₵{" "}
-                      {(item.price * item.quantity).toLocaleString()}
+                      GH₵ {(item.price * item.quantity).toLocaleString()}
                     </strong>
                   </div>
                 ))}
@@ -1092,9 +1012,7 @@ if (showCheckout) {
               <div className="cart-summary">
                 <div>
                   <span>SUBTOTAL</span>
-                  <strong>
-  GH₵ {cartTotal.toLocaleString()}
-</strong>
+                  <strong>GH₵ {cartTotal.toLocaleString()}</strong>
                 </div>
 
                 <p>
@@ -1103,14 +1021,14 @@ if (showCheckout) {
                 </p>
 
                 <button
-  className="checkout-button"
-  onClick={() => {
-    setShowCart(false);
-    setShowCheckout(true);
-  }}
->
-  CHECKOUT →
-</button>
+                  className="checkout-button"
+                  onClick={() => {
+                    setShowCart(false);
+                    setShowCheckout(true);
+                  }}
+                >
+                  CHECKOUT →
+                </button>
               </div>
             </>
           )}
@@ -1134,16 +1052,14 @@ if (showCheckout) {
           </div>
 
           <nav className="navbar">
-            <button onClick={closeProduct}>
-              ← BACK
-            </button>
+            <button onClick={closeProduct}>← BACK</button>
 
             <div className="nav-links">
               <a href="#" onClick={closeProduct}>
                 SHOP
               </a>
-              <a href="#about" onClick={(e) => { e.preventDefault(); goToSection("about"); }}>ABOUT</a>
-              <a href="#contact" onClick={(e) => { e.preventDefault(); goToSection("contact"); }}>CONTACT</a>
+              <a href="#" onClick={(e) => { e.preventDefault(); goToAbout(); }}>ABOUT</a>
+              <a href="#" onClick={(e) => { e.preventDefault(); goToContact(); }}>CONTACT</a>
             </div>
 
             <button onClick={() => setShowCart(true)}>
@@ -1154,22 +1070,15 @@ if (showCheckout) {
 
         <main className="product-page">
           <div className="product-detail-image">
-            <img
-              src={selectedProduct.image}
-              alt={selectedProduct.name}
-            />
+            <img src={selectedProduct.image} alt={selectedProduct.name} />
           </div>
 
           <div className="product-details">
-            <p className="product-category">
-              {selectedProduct.category}
-            </p>
+            <p className="product-category">{selectedProduct.category}</p>
 
             <h1>{selectedProduct.name}</h1>
 
-            <p className="product-price">
-              GH₵ {selectedProduct.price}
-            </p>
+            <p className="product-price">GH₵ {selectedProduct.price}</p>
 
             <p className="product-description">
               {selectedProduct.description}
@@ -1182,9 +1091,7 @@ if (showCheckout) {
                 {["S", "M", "L", "XL"].map((item) => (
                   <button
                     key={item}
-                    className={
-                      size === item ? "selected-size" : ""
-                    }
+                    className={size === item ? "selected-size" : ""}
                     onClick={() => setSize(item)}
                   >
                     {item}
@@ -1197,39 +1104,25 @@ if (showCheckout) {
               <p>QUANTITY</p>
 
               <div className="quantity-control">
-                <button
-                  onClick={() =>
-                    setQuantity(Math.max(1, quantity - 1))
-                  }
-                >
+                <button onClick={() => setQuantity(Math.max(1, quantity - 1))}>
                   −
                 </button>
 
                 <span>{quantity}</span>
 
-                <button
-                  onClick={() => setQuantity(quantity + 1)}
-                >
-                  +
-                </button>
+                <button onClick={() => setQuantity(quantity + 1)}>+</button>
               </div>
             </div>
 
             <button
               className="add-cart-button"
-              onClick={() =>
-                addToCart(
-                  selectedProduct,
-                  size,
-                  quantity
-                )
-              }
+              onClick={() => addToCart(selectedProduct, size, quantity)}
             >
               ADD TO CART — GH₵{" "}
               {(selectedProduct.price * quantity).toLocaleString()}
             </button>
 
-                        <div className="product-accordions" key={selectedProduct.id}>
+            <div className="product-accordions" key={selectedProduct.id}>
               <Accordion title="SIZE CHART">
                 <table className="size-table">
                   <thead>
@@ -1286,10 +1179,7 @@ if (showCheckout) {
               </Accordion>
             </div>
 
-            <button
-              className="continue-shopping"
-              onClick={closeProduct}
-            >
+            <button className="continue-shopping" onClick={closeProduct}>
               ← CONTINUE SHOPPING
             </button>
           </div>
@@ -1324,7 +1214,7 @@ if (showCheckout) {
     );
   }
 
-    // SEARCH PAGE
+  // SEARCH PAGE
   if (showSearch) {
     const query = searchQuery.trim().toLowerCase();
     const searchResults = products.filter(
@@ -1405,74 +1295,69 @@ if (showCheckout) {
   return (
     <div className="app">
       <header className="site-header" ref={headerRef}>
-  <div className="brand-marquee">
-    <div className="marquee-track">
-      <span>BRIEFPAGE</span>
-      <span>BRIEFPAGE</span>
-      <span>BRIEFPAGE</span>
-      <span>BRIEFPAGE</span>
-    </div>
-  </div>
+        <div className="brand-marquee">
+          <div className="marquee-track">
+            <span>BRIEFPAGE</span>
+            <span>BRIEFPAGE</span>
+            <span>BRIEFPAGE</span>
+            <span>BRIEFPAGE</span>
+          </div>
+        </div>
 
-  <nav className="navbar">
-    <button
-  className="menu-button"
-  type="button"
-  onClick={() => setShowMenu((prev) => !prev)}
-  aria-label={showMenu ? "Close menu" : "Open menu"}
->
-  MENU
-</button>
+        <nav className="navbar">
+          <button
+            className="menu-button"
+            type="button"
+            onClick={() => setShowMenu((prev) => !prev)}
+            aria-label={showMenu ? "Close menu" : "Open menu"}
+          >
+            MENU
+          </button>
 
-    <div className="nav-links">
-  <a href="#" onClick={(e) => { e.preventDefault(); goToShop(); }}>HOME</a>
-  <a href="#" onClick={(e) => { e.preventDefault(); goToSection("shop"); }}>SHOP</a>
-  <a href="#about" onClick={(e) => { e.preventDefault(); goToSection("about"); }}>ABOUT</a>
-  <a href="#contact" onClick={(e) => { e.preventDefault(); goToSection("contact"); }}>CONTACT</a>
-</div>
+          <div className="nav-links">
+            <a href="#" onClick={(e) => { e.preventDefault(); goToShop(); }}>HOME</a>
+            <a href="#" onClick={(e) => { e.preventDefault(); goToSection("shop"); }}>SHOP</a>
+            <a href="#" onClick={(e) => { e.preventDefault(); goToAbout(); }}>ABOUT</a>
+            <a href="#" onClick={(e) => { e.preventDefault(); goToContact(); }}>CONTACT</a>
+          </div>
 
-    <button onClick={() => setShowCart(true)}>
-      CART ({cartCount})
-    </button>
-  </nav>
+          <button onClick={() => setShowCart(true)}>
+            CART ({cartCount})
+          </button>
+        </nav>
 
-  {showMenu && (
-    <div className="menu-dropdown">
-      <div className="menu-header">
-  <button
-    type="button"
-    className="menu-close"
-    onClick={() => setShowMenu(false)}
-    aria-label="Close menu"
-  >
-    ×
-  </button>
-</div>
+        {showMenu && (
+          <div className="menu-overlay" onClick={() => setShowMenu(false)}></div>
+        )}
 
-      <div className="menu-main-links">
-  <button type="button" onClick={() => { goToShop(); setCategory("ALL"); setShowMenu(false); }}>
-    HOME
-  </button>
-  <button type="button" onClick={() => { goToShop(); setShowMenu(false); }}>
-    SHOP
-  </button>
-</div>
+        {showMenu && (
+          <div className="menu-dropdown">
+            <button
+              type="button"
+              className="menu-close"
+              onClick={() => setShowMenu(false)}
+              aria-label="Close menu"
+            >
+              ×
+            </button>
 
-<div className="menu-secondary">
-  <a href="#" onClick={(e) => { e.preventDefault(); goToAbout(); }}>ABOUT</a>
-  <a href="#" onClick={(e) => { e.preventDefault(); goToContact(); }}>CONTACT</a>
-</div>
-    </div>
-  )}
-</header>
+            <div className="menu-links">
+              <button type="button" onClick={goToSearch}>SEARCH</button>
+              <button type="button" onClick={goToShop}>SHOP</button>
+              <button type="button" onClick={goToAbout}>ABOUT</button>
+              <button type="button" onClick={goToContact}>CONTACT</button>
+            </div>
+
+            <div className="menu-brand-footer">BRIEFPAGE ARCHIVE LLC</div>
+          </div>
+        )}
+      </header>
+
       <div className="categories">
-
         {categories.map((item) => (
           <button
             key={item}
-            className={
-              category === item ? "active" : ""
-            }
+            className={category === item ? "active" : ""}
             onClick={() => setCategory(item)}
           >
             {item}
@@ -1481,8 +1366,6 @@ if (showCheckout) {
       </div>
 
       <main className="shop" id="shop">
-
-
         <div className="products">
           {filteredProducts.map((product) => (
             <div
@@ -1491,10 +1374,7 @@ if (showCheckout) {
               onClick={() => openProduct(product)}
             >
               <div className="product-image">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                />
+                <img src={product.image} alt={product.name} />
 
                 <button
                   className="quick-add"
@@ -1514,28 +1394,28 @@ if (showCheckout) {
             </div>
           ))}
         </div>
-            </main>
+      </main>
 
       <div className="site-links-footer">
-  <button type="button" onClick={goToAbout}>ABOUT</button>
-  <button type="button" onClick={goToContact}>CONTACT</button>
-  <button type="button" onClick={goToPrivacy}>PRIVACY POLICY</button>
-  <button type="button" onClick={goToTerms}>TERMS AND CONDITIONS</button>
-  <a
-  href="https://www.instagram.com/briefpagearchive.gallery"
-  target="_blank"
-  rel="noopener noreferrer"
->
-  INSTAGRAM
-</a>
-<a
-  href="https://youtube.com/@briefpagearchive.gallery"
-  target="_blank"
-  rel="noopener noreferrer"
->
-  YOUTUBE
-</a>
-</div>
+        <button type="button" onClick={goToAbout}>ABOUT</button>
+        <button type="button" onClick={goToContact}>CONTACT</button>
+        <button type="button" onClick={goToPrivacy}>PRIVACY POLICY</button>
+        <button type="button" onClick={goToTerms}>TERMS AND CONDITIONS</button>
+        <a
+          href="https://www.instagram.com/briefpagearchive.gallery"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          INSTAGRAM
+        </a>
+        <a
+          href="https://youtube.com/@briefpagearchive.gallery"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          YOUTUBE
+        </a>
+      </div>
     </div>
   );
 }
