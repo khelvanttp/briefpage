@@ -2013,3 +2013,129 @@ footer {
     margin: 0 auto 26px !important;
   }
 }
+
+/* CLOSED PAGE */
+
+.closed-page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+}
+
+.closed-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.closed-box {
+  width: 100%;
+  max-width: 340px;
+}
+
+.closed-message {
+  font-family: "Inter", sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  margin-bottom: 8px;
+}
+
+.closed-sub {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #555;
+  margin-bottom: 28px;
+}
+
+/* Kit's form, restyled to match the site (first attempt) */
+.closed-form .formkit-form {
+  max-width: 100% !important;
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+.closed-form .formkit-input {
+  border: none !important;
+  border-bottom: 1px solid #000 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  font-family: "Inter", sans-serif !important;
+  font-size: 16px !important;
+  padding: 12px 0 !important;
+}
+
+.closed-form .formkit-submit {
+  width: 100% !important;
+  height: 52px;
+  margin-top: 16px !important;
+  background: #000 !important;
+  color: #fff !important;
+  border-radius: 0 !important;
+  font-family: "Inter", sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.closed-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 20px 40px;
+}
+
+.password-link {
+  background: none;
+  border: none;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #000;
+  cursor: pointer;
+}
+
+.password-form {
+  width: 100%;
+  max-width: 340px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.password-form input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  border-bottom: 1px solid #000;
+  border-radius: 0;
+  background: transparent;
+  padding: 12px 0;
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  outline: none;
+}
+
+.password-form button {
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 0 22px;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+}
+
+.password-error {
+  width: 100%;
+  font-size: 12px;
+  color: #b00020;
+}
