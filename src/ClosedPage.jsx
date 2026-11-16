@@ -44,9 +44,8 @@ function ClosedPage({ onPassword }) {
       <main className="closed-main">
         <div className="closed-box">
           <p className="closed-message">Website is closed.</p>
-          <p className="closed-sub">
-            Leave your email to hear about the launch and updates from
-            BRIEFPAGE ARCHIVE.
+                    <p className="closed-sub">
+            Submit your email for updates and early access of new products.
           </p>
 
           <div className="closed-form" ref={formBox}></div>
